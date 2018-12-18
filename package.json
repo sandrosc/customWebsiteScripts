@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "parcel build ./src/*.ts --no-cache"
+    "build": "parcel build ./src/* --no-cache",
+    "start": "parcel ./src/*"
   },
   "author": "sandrosc",
   "dependencies": {},
   "license": "MIT",
   "devDependencies": {
     "parcel": "^1.10.3",
+    "sass": "^1.15.2",
     "typescript": "^3.2.2"
   }
 }

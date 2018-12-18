@@ -2,4 +2,4 @@ export function nice(params: string) {
   console.log(params);
 }
 
- nice('test');
+ nice('test2asdf');
