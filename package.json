@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "parcel build ./src/* --no-cache",
+    "build": "parcel build ./src/* --no-cache --no-minify",
     "start": "parcel ./src/*"
   },
   "author": "sandrosc",
@@ -13,5 +13,8 @@
     "parcel": "^1.10.3",
     "sass": "^1.15.2",
     "typescript": "^3.2.2"
-  }
+  },
+  "browserslist": [
+    "last 1 Chrome version"
+  ]
 }
