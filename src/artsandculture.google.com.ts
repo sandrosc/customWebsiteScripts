@@ -54,6 +54,257 @@ debugWindowFunctions([
 
 var _: any = window._ || {};
 
+declare global {
+  interface Window {
+    INIT_data: { [key: string]: string | any };
+  }
+}
+
+function downloadImage() {
+  let initData: any[];
+  function getInitData(): any[] {
+    if (!initData) {
+      initData = Object.values(window.initData)[0][2];
+    }
+    return initData;
+  }
+
+  class ImageDownloader {
+    private baseURL: URL;
+    private URLframe: string;
+
+    constructor() {
+      this.baseURL = new URL(getInitData()[8]);
+      this.URLframe= getInitData()[9];
+    }
+
+    getImageUrl(
+      x: number,
+      y: number,
+      z: number
+    ) {
+      const cache = {};
+      var key = `${x}-${y}-${z}`;
+      if (!(key in cache)) {
+        const url = `${this.baseURL.pathname.substr(1)}=x${x}-y${y}-z${z}-t${this.URLframe}`;
+
+        const blackbox = new blackboxedUT(new blackboxedWT(), [123, 43, 78, 35, 222, 44, 197, 197], 64);
+        const urlHashedNumbers = getHashedNumbers(url);
+        blackbox.reset();
+        blackbox.update(urlHashedNumbers);
+        const hashedNumbers = blackbox.F();
+        let base64stuff = _Wd(hashedNumbers);
+        base64stuff= base64stuff.substring(0, base64stuff.length - 1);
+        base64stuff = base64stuff.replace(/\+/g, '_').replace(/\//g, '_');
+          (urlHashedNumbers = this.B),
+          0 == urlHashedNumbers.indexOf('http://lh3.ggpht.com') &&
+          (urlHashedNumbers = urlHashedNumbers.replace(
+            'http://lh3.ggpht.com',
+            googleImageServers[(blackbox + y + 1) % googleImageServers.length]
+          ))
+          cache[key] =
+            urlHashedNumbers + '=' + ('x' + blackbox + '-y' + y + '-z' + z) + '-' + this.D + blackbox));
+      }
+
+      return cache[key];
+    }
+  }
+
+  ///////////////////// Black box
+  function _Wd (a, b = undefined) {
+    Td();
+    b = b ? numToChar_Pd : base64Map_Nd;
+    for (var c = [], d = 0; d < a.length; d += 3) {
+      var f = a[d]
+        , g = d + 1 < a.length
+        , k = g ? a[d + 1] : 0
+        , l = d + 2 < a.length
+        , m = l ? a[d + 2] : 0
+        , r = f >> 2;
+      f = (f & 3) << 4 | k >> 4;
+      k = (k & 15) << 2 | m >> 6;
+      m &= 63;
+      l || (m = 64,
+        g || (k = 64));
+      c.push(b[r], b[f], b[k], b[m])
+    }
+    return c.join("")
+  }
+
+  var base64Map_Nd:{[key:string]: string}
+  var charToNumb_Od:{[key: string]:number}
+  var numToChar_Pd: { [key: string]: string };
+  function Td() {
+    if (!base64Map_Nd) {
+      base64Map_Nd = {};
+      charToNumb_Od = {};
+      numToChar_Pd = {};
+      for (var a = 0; 65 > a; a++)
+        base64Map_Nd[a] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".charAt(a),
+          charToNumb_Od[base64Map_Nd[a]] = a,
+          numToChar_Pd[a] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.".charAt(a),
+          62 <= a && (charToNumb_Od["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.".charAt(a)] = a)
+    }
+  }
+  function getHashedNumbers (a:string) {
+    for (var b = [], c = 0, d = 0; d < a.length; d++) {
+      var f = a.charCodeAt(d);
+      255 < f && (b[c++] = f & 255,
+        f >>= 8);
+      b[c++] = f
+    }
+    return b
+  }
+  class blackboxedUT {
+    C: number;
+    B: any;
+    G: any[];
+    D: any[];
+    constructor(a: blackboxedWT, b: number[], c: number) {
+      this.C = -1;
+      this.B = a;
+      this.C = c || a.C || 16;
+      this.G = Array(this.C);
+      this.D = Array(this.C);
+      a = b;
+      a.length > this.C && (this.B.update(a), (a = this.B.F()), this.B.reset());
+      for (c = 0; c < this.C; c++)
+        (b = c < a.length ? a[c] : 0),
+          (this.G[c] = b ^ 92),
+          (this.D[c] = b ^ 54);
+      this.B.update(this.D);
+    }
+    reset() {
+      this.B.reset();
+      this.B.update(this.D);
+    }
+    update(a, b = undefined) {
+      this.B.update(a, b);
+    }
+    F() :number[]{
+      var a = this.B.F();
+      this.B.reset();
+      this.B.update(this.G);
+      this.B.update(a);
+      return this.B.F();
+    }
+  }
+  var decryptImageProbably = function (a, b, c) {
+    c || (c = 0);
+    var d = a.M;
+    if (_.Ja(b))
+      for (var f = 0; 16 > f; f++)
+        (d[f] =
+          (b.charCodeAt(c) << 24) |
+          (b.charCodeAt(c + 1) << 16) |
+          (b.charCodeAt(c + 2) << 8) |
+          b.charCodeAt(c + 3)),
+          (c += 4);
+    else
+      for (f = 0; 16 > f; f++)
+        (d[f] = (b[c] << 24) | (b[c + 1] << 16) | (b[c + 2] << 8) | b[c + 3]),
+          (c += 4);
+    for (f = 16; 80 > f; f++) {
+      var g = d[f - 3] ^ d[f - 8] ^ d[f - 14] ^ d[f - 16];
+      d[f] = ((g << 1) | (g >>> 31)) & 4294967295;
+    }
+    b = a.B[0];
+    c = a.B[1];
+    var k = a.B[2],
+      l = a.B[3],
+      m = a.B[4];
+    for (f = 0; 80 > f; f++) {
+      if (40 > f)
+        if (20 > f) {
+          g = l ^ (c & (k ^ l));
+          var r = 1518500249;
+        } else (g = c ^ k ^ l), (r = 1859775393);
+      else
+        60 > f
+          ? ((g = (c & k) | (l & (c | k))), (r = 2400959708))
+          : ((g = c ^ k ^ l), (r = 3395469782));
+      g = (((b << 5) | (b >>> 27)) + g + m + r + d[f]) & 4294967295;
+      m = l;
+      l = k;
+      k = ((c << 30) | (c >>> 2)) & 4294967295;
+      c = b;
+      b = g;
+    }
+    a.B[0] = (a.B[0] + b) & 4294967295;
+    a.B[1] = (a.B[1] + c) & 4294967295;
+    a.B[2] = (a.B[2] + k) & 4294967295;
+    a.B[3] = (a.B[3] + l) & 4294967295;
+    a.B[4] = (a.B[4] + m) & 4294967295;
+  };
+  class blackboxedWT {
+    /**length of G array, 64 */
+    C: number;
+    B: number[];
+    J: any[];
+    M: any[];
+    G: number[];
+    H: number;
+    D: number;
+    constructor() {
+      this.C = 64;
+      this.B = [];
+      this.J = [];
+      this.M = [];
+      this.G = [];
+      this.G[0] = 128;
+      for (var a = 1; a < this.C; ++a) this.G[a] = 0;
+      this.H = this.D = 0;
+      this.reset();
+    }
+    reset() {
+      this.B[0] = 1732584193;
+      this.B[1] = 4023233417;
+      this.B[2] = 2562383102;
+      this.B[3] = 271733878;
+      this.B[4] = 3285377520;
+      this.H = this.D = 0;
+    }
+    update(a, b) {
+      if (null != a) {
+        _.Ia(b) || (b = a.length);
+        for (var c = b - this.C, d = 0, f = this.J, g = this.D; d < b;) {
+          if (0 == g)
+            for (; d <= c;) decryptImageProbably(this, a, d), (d += this.C);
+          if (_.Ja(a))
+            for (; d < b;) {
+              if (((f[g] = a.charCodeAt(d)), ++g, ++d, g == this.C)) {
+                decryptImageProbably(this, f);
+                g = 0;
+                break;
+              }
+            }
+          else
+            for (; d < b;)
+              if (((f[g] = a[d]), ++g, ++d, g == this.C)) {
+                decryptImageProbably(this, f);
+                g = 0;
+                break;
+              }
+        }
+        this.D = g;
+        this.H += b;
+      }
+    }
+    F() {
+      var a = [],
+        b = 8 * this.H;
+      56 > this.D
+        ? this.update(this.G, 56 - this.D)
+        : this.update(this.G, this.C - (this.D - 56));
+      for (var c = this.C - 1; 56 <= c; c--) (this.J[c] = b & 255), (b /= 256);
+      decryptImageProbably(this, this.J);
+      for (c = b = 0; 5 > c; c++)
+        for (var d = 24; 0 <= d; d -= 8) (a[b] = (this.B[c] >> d) & 255), ++b;
+      return a;
+    }
+  }
+}
+
 inject(downloadImage);
 
 interface dimensions {
@@ -67,10 +318,10 @@ interface position {
 }
 
 interface absolutePosition {
-  top:number;
-  right:number;
-  bottom:number;
-  left:number;
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
 }
 
 enum EdgeConstant {
@@ -80,7 +331,7 @@ enum EdgeConstant {
   TOP_RIGHT = 'TOP_RIGHT'
 }
 
-function downloadImage() {
+function downloadImageOriginal() {
   var Wha = [1, 4, 2];
   var FT = function(a) {
     return _.lm
@@ -400,7 +651,7 @@ function downloadImage() {
     B: any;
     G: any[];
     D: any[];
-    constructor(a, b, c: number) {
+    constructor(a: WT, b: number[], c: number) {
       this.C = -1;
       this.B = a;
       this.C = c || a.C || 16;
@@ -557,7 +808,7 @@ function downloadImage() {
     'http://lh5.ggpht.com',
     'http://lh6.ggpht.com'
   ];
-  _.ZT = function(imageURL:string, specialString:string) {
+  _.ZT = function(imageURL: string, specialString: string) {
     this.B = imageURL;
     this.D = specialString || 'nt0';
     this.C = {};
@@ -570,7 +821,13 @@ function downloadImage() {
   _.ZT.prototype.Lk = function(a) {
     return new PyramidInformationMT(a);
   };
-  _.ZT.prototype.gj = function(x, y, z, d, f) {
+  _.ZT.prototype.gj = function(
+    x: number,
+    y: number,
+    z: number,
+    timestamp: number,
+    f: Window
+  ) {
     var key = x + '-' + y + '-' + z;
     key in this.C ||
       ((f =
@@ -579,15 +836,15 @@ function downloadImage() {
         ('x' + x + '-y' + y + '-z' + z) +
         '-' +
         this.D +
-        this.F(d, f)),
-      (d = new UT(new WT(), [123, 43, 78, 35, 222, 44, 197, 197], 64)),
+        this.F(timestamp, f)),
+      (timestamp = new UT(new WT(), [123, 43, 78, 35, 222, 44, 197, 197], 64)),
       (f = _.Nb(f)),
-      d.reset(),
-      d.update(f),
-      (d = d.F()),
-      (d = _.Wd(d)),
-      (d = d.substring(0, d.length - 1)),
-      (d = d.replace(/\+/g, '_').replace(/\//g, '_')),
+      timestamp.reset(),
+      timestamp.update(f),
+      (timestamp = timestamp.F()),
+      (timestamp = _.Wd(timestamp)),
+      (timestamp = timestamp.substring(0, timestamp.length - 1)),
+      (timestamp = timestamp.replace(/\+/g, '_').replace(/\//g, '_')),
       (f = this.B),
       0 == f.indexOf('http://lh3.ggpht.com') &&
         (f = f.replace(
@@ -595,7 +852,7 @@ function downloadImage() {
           googleImageServers[(x + y + 1) % googleImageServers.length]
         )),
       (this.C[key] =
-        f + '=' + ('x' + x + '-y' + y + '-z' + z) + '-' + this.D + d));
+        f + '=' + ('x' + x + '-y' + y + '-z' + z) + '-' + this.D + timestamp));
     return this.C[key];
   };
   _.ZT.prototype.F = function(a, b) {
@@ -1703,7 +1960,7 @@ function downloadImage() {
     }
   }
   _.t(UU, _.ki);
-  var WU = function(a:UU) {
+  var WU = function(a: UU) {
     _.Rs(a.D);
     VU(a, !0);
     for (var b in a.gb) a.gb[b].Ta();
@@ -1739,7 +1996,7 @@ function downloadImage() {
     this.C.B.push(a);
     VU(this, !1);
   };
-  var VU = function(a:UU, b:boolean) {
+  var VU = function(a: UU, b: boolean) {
     for (; (b || a.B > a.G) && !a.C.isEmpty(); ) {
       var c = _.Xs(a.C);
       delete a.gb[c.key];
@@ -2348,7 +2605,7 @@ function downloadImage() {
     }
   }
   _.t(vV, _.en);
-  var xV = function(a:vV, b, c, d, f) {
+  var xV = function(a: vV, b, c, d, f) {
     dia(a.M, b, c, d, f);
     var g = a.W.B;
     b = new _.Pp(
@@ -2400,7 +2657,7 @@ function downloadImage() {
     a.B && iV(a.B, a.J);
   };
   class CV {
-    constructor(a:zV, b:number, c:number | position, d:number) {
+    constructor(a: zV, b: number, c: number | position, d: number) {
       c instanceof _.no ? ((d = c.y), (c = c.x)) : _.Ia(d) || (d = 0);
       return a.O.Jd(a.M.gj(c, d, b, a.B.timestamp, window));
     }
@@ -5662,7 +5919,7 @@ function downloadImage() {
       b ? void 0 : 0
     );
   };
-  var tia = function(a:HW, b:PyramidInformationMT, c) {
+  var tia = function(a: HW, b: PyramidInformationMT, c) {
     if (null == a.O) throw Error('Mb');
     if (null == a.B) throw Error('Nb');
     a.da = b;
